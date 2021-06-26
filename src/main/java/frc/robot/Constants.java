@@ -12,4 +12,25 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+    public static double driveTrainWidth = 0;
+    public static double driveTrainLength = 0;
+    public static double inchesToMeters = .0254;
+    
+    public static class swervePID{
+        public static double kDriveP = 15.0;
+        public static double kDriveI = 0.01;
+        public static double kDriveD = 0.1;
+        public static double kDriveF = 0.2;
+      
+        public static double kAngleP = 1.0;
+        public static double kAngleI = 0.0;
+        public static double kAngleD = 0.0;
+
+        public static double kEncoderTicksPerRotation = 2048;//4096
+
+        public static final double kMaxAngularSpeed = Math.PI;
+    }
+}
+
+
