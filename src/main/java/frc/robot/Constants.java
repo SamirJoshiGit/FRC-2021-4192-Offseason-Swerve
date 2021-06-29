@@ -16,6 +16,7 @@ public final class Constants {
     public static double driveTrainWidth = 0;
     public static double driveTrainLength = 0;
     public static double inchesToMeters = .0254;
+    public static double driveControllerNumber = 0;
     
     public static class swervePID{
         public static double kDriveP = 15.0;
