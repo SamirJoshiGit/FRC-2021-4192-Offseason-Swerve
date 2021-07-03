@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Auton.SampleAuton;
 import frc.robot.commands.SwerveCommands.SwerveDriveControl;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.driveSystem.SwerveDrive;
@@ -29,9 +30,12 @@ public class RobotContainer {
   //subsystems
   private final SwerveDrive swerve = new SwerveDrive();
   
-  //commands
+  //drive commands
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final SwerveDriveControl userControl = new SwerveDriveControl(swerve, driveControl);
+
+  //autonomous commands
+  private final SampleAuton sampleAuton = new SampleAuton(swerve);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -54,6 +58,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return userControl;//temporary until we get auton commmand
+    return sampleAuton;//temporary until we get auton commmand
   }
 }
