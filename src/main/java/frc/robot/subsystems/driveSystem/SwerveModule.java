@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.driveSystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -12,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.util.Units;
@@ -22,11 +24,14 @@ public class SwerveModule extends SubsystemBase {
   /** Creates a new SwerveModule. */
   private TalonFX driveMotor;
   private TalonFX angleMotor;
-  private CANCoder angleCoder;
+  private static CANCoder angleCoder;
+  private static Encoder driveCoder;
+  private static double initAngle;
   public SwerveModule(TalonFX driveMotor, TalonFX angleMotor, CANCoder canCoder, Rotation2d offset) {
     this.driveMotor = driveMotor;
     this.angleMotor = angleMotor;
     canCoder = angleCoder;
+    initAngle = angleCoder.getPosition();
 
     TalonFXConfiguration angleTalonFXConfiguration = new TalonFXConfiguration();
 
@@ -54,13 +59,20 @@ public class SwerveModule extends SubsystemBase {
 
   }
 
-  public Rotation2d getAngle(){
+  //change to non-static if not working and add gyro into drive also
+  public static Rotation2d getRotationAngle(){
     return Rotation2d.fromDegrees(angleCoder.getAbsolutePosition());
+  }
+  public static double getFromInit(){
+    return angleCoder.getPosition() - initAngle;
+  }
+  public SwerveModuleState getState() {
+    return new SwerveModuleState(driveCoder.getRate(), new Rotation2d(angleCoder.getPosition()));
   }
   //parameter tells what state we want
   public void setDesiredState(SwerveModuleState desiredState){
     //gets our angle and sets optimal state
-    Rotation2d currentRotation = getAngle();
+    Rotation2d currentRotation = getRotationAngle();
     SwerveModuleState state = optimize(desiredState, currentRotation);
     
     //finds the angle difference between current rotation and desired rotation
@@ -79,6 +91,10 @@ public class SwerveModule extends SubsystemBase {
 
     //send power
     driveMotor.set(TalonFXControlMode.PercentOutput, feetPerSecond / SwerveDrive.kMaxSpeed);
+  }
+  
+  public void changeAngle(double output){
+    angleMotor.set(ControlMode.PercentOutput, output);
   }
   
   public static SwerveModuleState optimize(

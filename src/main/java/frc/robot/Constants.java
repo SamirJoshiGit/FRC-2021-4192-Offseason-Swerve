@@ -32,6 +32,18 @@ public final class Constants {
 
         public static final double kMaxAngularSpeed = Math.PI;
     }
+
+    public static class rotateTheModulePID {
+        public static double kRotateP = 0;
+        public static double kRotateI = 0;
+        public static double kRotateD = 0;
+    }
+
+    public static class speedModulePID {
+        public static double kSpeedP = 0;
+        public static double kSpeedI = 0;
+        public static double kSpeedD = 0;
+    }
 }
 
 

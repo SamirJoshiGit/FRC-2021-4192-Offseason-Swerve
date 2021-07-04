@@ -8,10 +8,12 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,6 +24,7 @@ public class SwerveDrive extends SubsystemBase {
   public static final double kMaxSpeed = Units.feetToMeters(13.6);
 
   private AHRS ahrs = new AHRS(SPI.Port.kMXP);
+
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
     //change when building drive
@@ -42,6 +45,9 @@ public class SwerveDrive extends SubsystemBase {
       Units.inchesToMeters(-10)
     )
   );
+  //probe rotation angle
+  SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics,
+  SwerveModule.getRotationAngle(), new Pose2d(0, 0, new Rotation2d()));
   
   //CAN numbers need to be changed to match PDP CAN
   private SwerveModule[] modules = new SwerveModule[] {
@@ -52,7 +58,12 @@ public class SwerveDrive extends SubsystemBase {
   };
   
   public SwerveDrive() {
-    ahrs.reset(); 
+    ahrs.reset();
+
+  }
+
+  public double getAngle(){
+    return ahrs.getAngle();
   }
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
@@ -69,8 +80,13 @@ public class SwerveDrive extends SubsystemBase {
     }
   }
   
+  public void updatePose(){
+    var gyroAngle = Rotation2d.fromDegrees(-getAngle());
+    odometry.update(ahrs.getRotation2d(), modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updatePose();
   }
 }
