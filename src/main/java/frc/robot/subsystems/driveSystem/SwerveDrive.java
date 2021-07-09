@@ -79,7 +79,7 @@ public class SwerveDrive extends SubsystemBase {
       module.setDesiredState(state);
     }
   }
-  
+  //updates pose
   public void updatePose(){
     var gyroAngle = Rotation2d.fromDegrees(-getAngle());
     odometry.update(ahrs.getRotation2d(), modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
