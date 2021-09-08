@@ -69,6 +69,12 @@ public class SwerveModule extends SubsystemBase {
   public SwerveModuleState getState() {
     return new SwerveModuleState(driveCoder.getRate(), new Rotation2d(angleCoder.getPosition()));
   }
+  public void turnAngle(double powerOutput){
+    angleMotor.set(ControlMode.PercentOutput, powerOutput);
+  }
+  public void testPower(double powerOutput){
+    driveMotor.set(ControlMode.PercentOutput, powerOutput);
+  }
   //parameter tells what state we want
   public void setDesiredState(SwerveModuleState desiredState){
     //gets our angle and sets optimal state

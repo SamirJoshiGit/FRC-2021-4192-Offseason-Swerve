@@ -4,15 +4,25 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
+
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Auton.SampleAuton;
 import frc.robot.commands.SwerveCommands.SwerveDriveControl;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.driveSystem.SwerveDrive;
+import frc.robot.subsystems.driveSystem.SwerveModule;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.SwerveCommands.TestAngle;
+import frc.robot.commands.SwerveCommands.TestPower;
+import frc.robot.commands.SwerveCommands.TestPowerAngle;
 import frc.robot.Constants;
 
 /**
@@ -29,11 +39,20 @@ public class RobotContainer {
   
   //subsystems
   private final SwerveDrive swerve = new SwerveDrive();
+  private final SwerveModule module = new SwerveModule(new TalonFX(1), new TalonFX(2), new CANCoder(0), Rotation2d.fromDegrees(0));
+
   
   //drive commands
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final SwerveDriveControl userControl = new SwerveDriveControl(swerve, driveControl);
+  private final TestAngle turnTest = new TestAngle(module, .1);
+  private final TestPower powerTest = new TestPower(module, .1);
+  private final TestPowerAngle testBoth = new TestPowerAngle(module, .1, .1);
 
+  //Buttons
+  JoystickButton driverYButton = new JoystickButton(driveControl, 4);//set buttonNumbers in constants later
+  JoystickButton driverXButton = new JoystickButton(driveControl, 3);//set buttonNumbers in constants later
+  JoystickButton driverBButton = new JoystickButton(driveControl, 2);//set buttonNumbers in constants later
   //autonomous commands
   private final SampleAuton sampleAuton = new SampleAuton(swerve);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -49,7 +68,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    driverXButton.whenActive(turnTest);
+    driverYButton.whenActive(powerTest);
+    driverBButton.whenActive(testBoth);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
