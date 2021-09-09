@@ -29,20 +29,20 @@ public class SwerveDrive extends SubsystemBase {
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
     //change when building drive
     new Translation2d(
-      Units.inchesToMeters(10),
-      Units.inchesToMeters(10)
+      Units.inchesToMeters(7.5),
+      Units.inchesToMeters(7.5)
     ),
     new Translation2d(
-      Units.inchesToMeters(10),
-      Units.inchesToMeters(-10)
+      Units.inchesToMeters(7.5),
+      Units.inchesToMeters(-7.5)
     ),
     new Translation2d(
-      Units.inchesToMeters(-10),
-      Units.inchesToMeters(10)
+      Units.inchesToMeters(-7.5),
+      Units.inchesToMeters(7.5)
     ),
     new Translation2d(
-      Units.inchesToMeters(-10),
-      Units.inchesToMeters(-10)
+      Units.inchesToMeters(-7.5),
+      Units.inchesToMeters(-7.5)
     )
   );
   //probe rotation angle
