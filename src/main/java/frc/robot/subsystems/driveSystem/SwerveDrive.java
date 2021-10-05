@@ -46,15 +46,15 @@ public class SwerveDrive extends SubsystemBase {
     )
   );
   //probe rotation angle
-  SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics,
-  SwerveModule.getRotationAngle(), new Pose2d(0, 0, new Rotation2d()));
+  //SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics,
+  //SwerveModule.getRotationAngle(), new Pose2d(0, 0, new Rotation2d()));
   
   //CAN numbers need to be changed to match PDP CAN
   private SwerveModule[] modules = new SwerveModule[] {
-    new SwerveModule(new TalonFX(1), new TalonFX(2), new CANCoder(0), Rotation2d.fromDegrees(0)), // Front Left
-    new SwerveModule(new TalonFX(3), new TalonFX(4), new CANCoder(1), Rotation2d.fromDegrees(0)), // Front Right
-    new SwerveModule(new TalonFX(5), new TalonFX(6), new CANCoder(2), Rotation2d.fromDegrees(0)), // Back Left
-    new SwerveModule(new TalonFX(7), new TalonFX(8), new CANCoder(3), Rotation2d.fromDegrees(0))  // Back Right
+    new SwerveModule(new TalonFX(1), new TalonFX(0), new CANCoder(0), Rotation2d.fromDegrees(0)), // Front Left CAN 0
+    new SwerveModule(new TalonFX(3), new TalonFX(2), new CANCoder(1), Rotation2d.fromDegrees(1)), // Front Right CAN 1
+    new SwerveModule(new TalonFX(14), new TalonFX(15), new CANCoder(2), Rotation2d.fromDegrees(3)), // Back Left CAN 2
+    new SwerveModule(new TalonFX(12), new TalonFX(13), new CANCoder(3), Rotation2d.fromDegrees(2))  // Back Right CAN 3
   };
   
   public SwerveDrive() {
@@ -76,13 +76,13 @@ public class SwerveDrive extends SubsystemBase {
     for (int i = 0; i < states.length; i++) {
       SwerveModule module = modules[i];
       SwerveModuleState state = states[i];
-      module.setDesiredState(state);
+      //module.setDesiredState(state);
     }
   }
   //updates pose
   public void updatePose(){
     var gyroAngle = Rotation2d.fromDegrees(-getAngle());
-    odometry.update(ahrs.getRotation2d(), modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
+    //odometry.update(ahrs.getRotation2d(), modules[0].getState(), modules[1].getState(), modules[2].getState(), modules[3].getState());
   }
   @Override
   public void periodic() {

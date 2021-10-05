@@ -23,7 +23,7 @@ import frc.robot.Constants.swervePID;
 public class SwerveModule extends SubsystemBase {
   /** Creates a new SwerveModule. */
   private TalonFX driveMotor;
-  private TalonFX angleMotor;
+  private TalonFX angleMotor; 
   private static CANCoder angleCoder;
   private static Encoder driveCoder;
   private static double initAngle;
@@ -31,7 +31,7 @@ public class SwerveModule extends SubsystemBase {
     this.driveMotor = driveMotor;
     this.angleMotor = angleMotor;
     canCoder = angleCoder;
-    initAngle = angleCoder.getPosition();
+    //initAngle = angleCoder.getPosition();
 
     TalonFXConfiguration angleTalonFXConfiguration = new TalonFXConfiguration();
 
@@ -39,10 +39,10 @@ public class SwerveModule extends SubsystemBase {
     angleTalonFXConfiguration.slot0.kI = swervePID.kAngleI;
     angleTalonFXConfiguration.slot0.kD = swervePID.kAngleD;
 
-    angleTalonFXConfiguration.remoteFilter0.remoteSensorDeviceID = canCoder.getDeviceID();
-    angleTalonFXConfiguration.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
-    angleTalonFXConfiguration.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-    angleMotor.configAllSettings(angleTalonFXConfiguration);
+    //angleTalonFXConfiguration.remoteFilter0.remoteSensorDeviceID = canCoder.getDeviceID();
+    //angleTalonFXConfiguration.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
+    //angleTalonFXConfiguration.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+    //angleMotor.configAllSettings(angleTalonFXConfiguration);
 
     TalonFXConfiguration driveTalonFXConfiguration = new TalonFXConfiguration();
 
@@ -54,15 +54,17 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.configAllSettings(driveTalonFXConfiguration);
 
     CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
-    canCoderConfiguration.magnetOffsetDegrees = offset.getDegrees();
-    canCoder.configAllSettings(canCoderConfiguration);
+    //canCoderConfiguration.magnetOffsetDegrees = offset.getDegrees();
+    //canCoder.configAllSettings(canCoderConfiguration);
 
   }
+  
 
   //change to non-static if not working and add gyro into drive also
-  public static Rotation2d getRotationAngle(){
-    return Rotation2d.fromDegrees(angleCoder.getAbsolutePosition());
-  }
+  /*public static Rotation2d getRotationAngle(){
+    Rotation2d basePoint = new Rotation2d();
+    return basePoint.fromDegrees(angleCoder.getAbsolutePosition());
+  }*/
   public static double getFromInit(){
     return angleCoder.getPosition() - initAngle;
   }
@@ -76,7 +78,7 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.set(ControlMode.PercentOutput, powerOutput);
   }
   //parameter tells what state we want
-  public void setDesiredState(SwerveModuleState desiredState){
+  /*public void setDesiredState(SwerveModuleState desiredState){
     //gets our angle and sets optimal state
     Rotation2d currentRotation = getRotationAngle();
     SwerveModuleState state = optimize(desiredState, currentRotation);
@@ -97,7 +99,7 @@ public class SwerveModule extends SubsystemBase {
 
     //send power
     driveMotor.set(TalonFXControlMode.PercentOutput, feetPerSecond / SwerveDrive.kMaxSpeed);
-  }
+  }*/
   
   public void changeAngle(double output){
     angleMotor.set(ControlMode.PercentOutput, output);

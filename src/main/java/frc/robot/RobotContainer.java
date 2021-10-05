@@ -39,15 +39,23 @@ public class RobotContainer {
   
   //subsystems
   private final SwerveDrive swerve = new SwerveDrive();
-  private final SwerveModule module = new SwerveModule(new TalonFX(1), new TalonFX(2), new CANCoder(0), Rotation2d.fromDegrees(0));
-
+  private final SwerveModule module = new SwerveModule(new TalonFX(14), new TalonFX(15), new CANCoder(0), Rotation2d.fromDegrees(0));
+  private final SwerveModule module1 = new SwerveModule(new TalonFX(1), new TalonFX(0), new CANCoder(0), Rotation2d.fromDegrees(0));
+  private final SwerveModule module2= new SwerveModule(new TalonFX(3), new TalonFX(2), new CANCoder(0), Rotation2d.fromDegrees(0));
+  private final SwerveModule module3 = new SwerveModule(new TalonFX(12), new TalonFX(13), new CANCoder(0), Rotation2d.fromDegrees(0));
   
   //drive commands
   //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final SwerveDriveControl userControl = new SwerveDriveControl(swerve, driveControl);
-  private final TestAngle turnTest = new TestAngle(module, .1);
-  private final TestPower powerTest = new TestPower(module, .1);
-  private final TestPowerAngle testBoth = new TestPowerAngle(module, .1, .1);
+  private final TestAngle turnTest = new TestAngle(module, .4);
+  private final TestAngle turnTest1 = new TestAngle(module1, .4);
+  private final TestAngle turnTest2 = new TestAngle(module2, .4);
+  private final TestAngle turnTest3 = new TestAngle(module3, .4);
+  private final TestPower powerTest = new TestPower(module, .4);
+  private final TestPower powerTest1 = new TestPower(module1, .4);
+  private final TestPower powerTest2 = new TestPower(module2, .4);
+  private final TestPower powerTest3 = new TestPower(module3, .4);
+  private final TestPowerAngle testBoth = new TestPowerAngle(module, .4, .4);
 
   //Buttons
   JoystickButton driverYButton = new JoystickButton(driveControl, 4);//set buttonNumbers in constants later
@@ -58,7 +66,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
-    swerve.setDefaultCommand(userControl);
+    //swerve.setDefaultCommand(userControl);
     configureButtonBindings();
   }
 
@@ -69,9 +77,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driverXButton.whenActive(turnTest);
-    driverYButton.whenActive(powerTest);
-    driverBButton.whenActive(testBoth);
+    driverXButton.whenHeld(turnTest);
+    driverXButton.whenHeld(turnTest1);
+    driverXButton.whenHeld(turnTest2);
+    driverXButton.whenHeld(turnTest3);
+    driverYButton.whenHeld(powerTest);
+    driverYButton.whenHeld(powerTest1);
+    driverYButton.whenHeld(powerTest2);
+    driverYButton.whenHeld(powerTest3);
+    driverBButton.whenHeld(testBoth);
   }
 
   /**
